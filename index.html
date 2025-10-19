@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20/10 - Memory Game</title>
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <h1 class="login-title">20/10 💐</h1>
+            <p class="login-subtitle">Ngày Phụ Nữ Việt Nam</p>
+            <div class="input-group">
+                <input type="text" class="input-field" id="nameInput" placeholder="Nhập tên của bạn..." autocomplete="off">
+            </div>
+            <button class="btn-login" id="btnLogin">Bắt Đầu ✨</button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div class="game-screen" id="gameScreen">
+        <p class="welcome-text" id="welcomeText"></p>
+        <h1 class="game-title">Tìm Cặp Hoa</h1>
+        <div class="game-grid" id="gameGrid"></div>
+    </div>
+
+    <!-- Congratulations Screen -->
+    <div class="congrats-screen" id="congratsScreen">
+        <div class="congrats-content">
+            <div class="congrats-emoji">🎉</div>
+            <h1 class="congrats-title">Chúc Mừng!</h1>
+            <p class="congrats-message">
+                Chúc mừng 20/10!<br>
+                Chúc Nhi luôn xinh đẹp, tự tin và tỏa sáng!<br>
+                ✨💖🌸
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Create particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Floating flowers
+        function createFlower() {
+            const flowers = ['🌸', '🌺', '🌹', '🌷', '💐', '🌼'];
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+            flower.style.left = Math.random() * 100 + '%';
+            flower.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            document.body.appendChild(flower);
+            
+            setTimeout(() => flower.remove(), 13000);
+        }
+
+        setInterval(createFlower, 1000);
+
+        // Login functionality
+        const loginScreen = document.getElementById('loginScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const congratsScreen = document.getElementById('congratsScreen');
+        const nameInput = document.getElementById('nameInput');
+        const btnLogin = document.getElementById('btnLogin');
+        const welcomeText = document.getElementById('welcomeText');
+
+        btnLogin.addEventListener('click', startGame);
+        nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') startGame();
+        });
+
+function startGame() {
+    const name = nameInput.value.trim().toLowerCase(); // chuyển về chữ thường để tránh sai hoa thường
+    if (name === '') {
+        nameInput.style.animation = 'shake 0.5s';
+        setTimeout(() => nameInput.style.animation = '', 500);
+        return;
+    }
+
+    if (name !== 'nhi2010') {
+        nameInput.value = '';
+        nameInput.placeholder = '❌ Sai rồi, nhập đúng tên nhé!';
+        nameInput.style.animation = 'shake 0.5s';
+        setTimeout(() => nameInput.style.animation = '', 500);
+        return;
+    }
+
+    welcomeText.textContent = `Chào Nhi! 🌸`;
+    loginScreen.classList.add('hidden');
+    gameScreen.classList.add('active');
+    initGame();
+}
+
+
+        // Game logic - THAY ẢNH CỦA BẠN Ở ĐÂY
+        const images = [
+            'https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-1/541026207_1524848582201424_925851824851543611_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeE8H7oRyApAiEJV4Rcv4NrTBJjKwP03eegEmMrA_Td56Jv7dt9XNjhCl0bznCrz9InejAWYfsMAI2xPyFGZjw4E&_nc_ohc=BPeUwzrybW0Q7kNvwGKRCs3&_nc_oc=AdniuGHsyqNdW5LShB5uOhz0weLuFxRzwlah_nZ05St89R7vlic31xSxO1paNtRCbg8&_nc_zt=24&_nc_ht=scontent.fhan5-8.fna&_nc_gid=HLEQTzBS9AyL_MizdyKguw&oh=00_AfdSmuCuX2eyuiR4OKx3Ljc8yRGhVBb2FnZL0PjJpVUA7A&oe=68FB09FF',
+            'https://cdn2.fptshop.com.vn/unsafe/20_10_nen_tang_hoa_gi_3_96befbafdf.jpg',
+            'https://cdn2.fptshop.com.vn/unsafe/20_10_nen_tang_hoa_gi_4_3a30e2c9fa.jpg',
+            'https://thegioihoa.net/file/sanpham/14-02/1606534679-hoa-valentine-36%20(11).JPG',
+            'https://img.mayflower.vn/2020/03/yeu-mai-mot-tinh-yeu.jpg',
+            'https://cafebiz.cafebizcdn.vn/thumb_w/600/162123310254002176/2021/10/19/photo1634637489630-1634637489712155686964.jpg'
+        ];
+        let cards = [...images, ...images];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let canFlip = true;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initGame() {
+            const gameGrid = document.getElementById('gameGrid');
+            gameGrid.innerHTML = '';
+            cards = shuffle([...images, ...images]);
+            matchedPairs = 1;
+            flippedCards = [];
+
+            cards.forEach((imgUrl, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.image = imgUrl;
+                card.dataset.index = index;
+                
+                card.innerHTML = `
+                    <div class="card-front">❓</div>
+                    <div class="card-back">
+                        <img src="${imgUrl}" alt="Card image">
+                    </div>
+                `;
+                
+                card.addEventListener('click', flipCard);
+                gameGrid.appendChild(card);
+            });
+        }
+
+        function flipCard() {
+            if (!canFlip || this.classList.contains('flipped') || this.classList.contains('matched')) {
+                return;
+            }
+
+            this.classList.add('flipped');
+            
+            // Nếu là ảnh Facebook, chỉ lật ra và giữ nguyên, không thêm class matched
+            const fbImageUrl = 'https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-1/541026207_1524848582201424_925851824851543611_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeE8H7oRyApAiEJV4Rcv4NrTBJjKwP03eegEmMrA_Td56Jv7dt9XNjhCl0bznCrz9InejAWYfsMAI2xPyFGZjw4E&_nc_ohc=BPeUwzrybW0Q7kNvwGKRCs3&_nc_oc=AdniuGHsyqNdW5LShB5uOhz0weLuFxRzwlah_nZ05St89R7vlic31xSxO1paNtRCbg8&_nc_zt=24&_nc_ht=scontent.fhan5-8.fna&_nc_gid=HLEQTzBS9AyL_MizdyKguw&oh=00_AfdSmuCuX2eyuiR4OKx3Ljc8yRGhVBb2FnZL0PjJpVUA7A&oe=68FB09FF';
+            if (this.dataset.image === fbImageUrl) {
+                return; // Chỉ lật ra, không làm gì thêm
+            }
+            
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                canFlip = false;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            const img1 = card1.dataset.image;
+            const img2 = card2.dataset.image;
+
+            if (img1 === img2) {
+                setTimeout(() => {
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedPairs++;
+
+                    if (matchedPairs === images.length) {
+                        setTimeout(showCongratulations, 800);
+                    }
+
+                    flippedCards = [];
+                    canFlip = true;
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                    flippedCards = [];
+                    canFlip = true;
+                }, 1000);
+            }
+        }
+
+        function showCongratulations() {
+            gameScreen.classList.remove('active');
+            congratsScreen.classList.add('active');
+            createFireworks();
+        }
+
+        function createFireworks() {
+            setInterval(() => {
+                const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#26de81'];
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+
+                for (let i = 0; i < 30; i++) {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = x + 'px';
+                    firework.style.top = y + 'px';
+                    firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const angle = (Math.PI * 2 * i) / 30;
+                    const velocity = 100 + Math.random() * 100;
+                    const tx = Math.cos(angle) * velocity;
+                    const ty = Math.sin(angle) * velocity;
+                    
+                    firework.style.setProperty('--x', tx + 'px');
+                    firework.style.setProperty('--y', ty + 'px');
+                    firework.style.animation = 'fireworkExplode 1s ease-out forwards';
+                    
+                    document.body.appendChild(firework);
+                    
+                    setTimeout(() => firework.remove(), 1000);
+                }
+            }, 500);
+        }
+
+        // Shake animation for input validation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
