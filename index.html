@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>20/10 - Memory Game</title>
     <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" href="./logo.ico" />
     <style>
         
     </style>
@@ -27,7 +28,7 @@
     <!-- Game Screen -->
     <div class="game-screen" id="gameScreen">
         <p class="welcome-text" id="welcomeText"></p>
-        <h1 class="game-title">Tìm Cặp Hoa</h1>
+        <h1 class="game-title">Tìm cặp hoa nào !!!</h1>
         <div class="game-grid" id="gameGrid"></div>
     </div>
 
@@ -109,8 +110,9 @@ function startGame() {
 
         // Game logic - THAY ẢNH CỦA BẠN Ở ĐÂY
         const images = [
-            'https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-1/541026207_1524848582201424_925851824851543611_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeE8H7oRyApAiEJV4Rcv4NrTBJjKwP03eegEmMrA_Td56Jv7dt9XNjhCl0bznCrz9InejAWYfsMAI2xPyFGZjw4E&_nc_ohc=BPeUwzrybW0Q7kNvwGKRCs3&_nc_oc=AdniuGHsyqNdW5LShB5uOhz0weLuFxRzwlah_nZ05St89R7vlic31xSxO1paNtRCbg8&_nc_zt=24&_nc_ht=scontent.fhan5-8.fna&_nc_gid=HLEQTzBS9AyL_MizdyKguw&oh=00_AfdSmuCuX2eyuiR4OKx3Ljc8yRGhVBb2FnZL0PjJpVUA7A&oe=68FB09FF',
             'https://cdn2.fptshop.com.vn/unsafe/20_10_nen_tang_hoa_gi_3_96befbafdf.jpg',
+            'https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-1/541026207_1524848582201424_925851824851543611_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_eui2=AeE8H7oRyApAiEJV4Rcv4NrTBJjKwP03eegEmMrA_Td56Jv7dt9XNjhCl0bznCrz9InejAWYfsMAI2xPyFGZjw4E&_nc_ohc=BPeUwzrybW0Q7kNvwGKRCs3&_nc_oc=AdniuGHsyqNdW5LShB5uOhz0weLuFxRzwlah_nZ05St89R7vlic31xSxO1paNtRCbg8&_nc_zt=24&_nc_ht=scontent.fhan5-8.fna&_nc_gid=HLEQTzBS9AyL_MizdyKguw&oh=00_AfdSmuCuX2eyuiR4OKx3Ljc8yRGhVBb2FnZL0PjJpVUA7A&oe=68FB09FF',
+            // 'https://cdn2.fptshop.com.vn/unsafe/20_10_nen_tang_hoa_gi_3_96befbafdf.jpg',
             'https://cdn2.fptshop.com.vn/unsafe/20_10_nen_tang_hoa_gi_4_3a30e2c9fa.jpg',
             'https://thegioihoa.net/file/sanpham/14-02/1606534679-hoa-valentine-36%20(11).JPG',
             'https://img.mayflower.vn/2020/03/yeu-mai-mot-tinh-yeu.jpg',
