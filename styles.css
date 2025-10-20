@@ -438,3 +438,39 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+            :root{
+      --brand:#003366;
+      --brand-hover:#00bcd4; /* tương tự cyan-600 */
+      --btn-radius:12px;
+      --btn-padding: 12px 24px;
+    }
+    .mail-button{
+      display:inline-block;
+      background:var(--brand);
+      color:white;
+      padding:var(--btn-padding);
+      border-radius:var(--btn-radius);
+      text-decoration:none;
+      font-weight:600;
+      transition: background 200ms ease, transform 120ms ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    .mail-button:hover,
+    .mail-button:focus{
+      background:var(--brand-hover);
+      transform: translateY(-2px);
+      outline: none;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+    }
+
+    .mail-button:active{
+      transform: translateY(0);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+
+    /* Emoji spacing */
+    .mail-button .emoji{
+      margin-right:8px;
+      line-height:1;
+    }
